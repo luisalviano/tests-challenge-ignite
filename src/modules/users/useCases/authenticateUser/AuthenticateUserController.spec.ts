@@ -1,5 +1,7 @@
 import request from "supertest";
-import { Connection, createConnection } from "typeorm";
+import { Connection } from "typeorm";
+
+import createConnection from "../../../../database"
 
 import { app } from "../../../../app"
 
@@ -8,9 +10,11 @@ let connection: Connection
 describe("Authenticate User Controller", () => {
   beforeAll(async () => {
     connection = await createConnection();
+    await connection.runMigrations();
   });
 
   afterAll(async () => {
+    await connection.dropDatabase();
     await connection.close();
   });
 
